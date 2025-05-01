@@ -160,7 +160,8 @@ io.on("connection", (socket) => {
   socket.on("playedWalkingAnimation", (walkingInfo) => {
     socket.broadcast.emit("playWalkingAnimation", {
       playerId: socket.id,
-      rotation: walkingInfo.rotation
+      rotation: walkingInfo.rotation,
+      isRunning: walkingInfo.isRunning
     });
   });
 

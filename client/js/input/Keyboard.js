@@ -2,7 +2,8 @@ let keys = {
   w: false,
   a: false,
   s: false,
-  d: false
+  d: false,
+  shift: false  // Adicionando a tecla shift para detectar corrida
 };
 
 function keyDownHandler(event) {
@@ -15,6 +16,8 @@ function keyDownHandler(event) {
     keys.s = true;
   } else if (pressedKey == "d") {
     keys.d = true;
+  } else if (pressedKey == "shift") {
+    keys.shift = true;  // Detectando quando o shift é pressionado
   } else if (pressedKey == "tab") {
     event.preventDefault();
   } else if (pressedKey == " ") {
@@ -33,6 +36,8 @@ function keyUpHandler(event) {
     keys.s = false;
   } else if (pressedKey == "d") {
     keys.d = false;
+  } else if (pressedKey == "shift") {
+    keys.shift = false;  // Detectando quando o shift é liberado
   }
 }
 
@@ -41,28 +46,36 @@ function onBlurHandler() {
     w: false,
     a: false,
     s: false,
-    d: false
+    d: false,
+    shift: false  // Resetando shift também
   };
 }
 
 function keyEvents() {
   if (playerManager.mainPlayer.isRespawning) return;
 
+  // Calculando o multiplicador de velocidade baseado na tecla shift
+  const speedMultiplier = keys.shift ? 1.8 : 1.0;  // 80% mais rápido ao correr
+  const currentSpeed = Constants.SPEED * speedMultiplier;
+  
+  // Ajustando a velocidade diagonal para manter consistência de movimento
+  const diagonalSpeed = currentSpeed / 1.25;
+
   if (keys.w && keys.d) {
-    playerManager.mainPlayer.move(Constants.SPEED / 1.25, -Constants.SPEED / 1.25, 45);
+    playerManager.mainPlayer.move(diagonalSpeed, -diagonalSpeed, 45, keys.shift);
   } else if (keys.w && keys.a) {
-    playerManager.mainPlayer.move(-Constants.SPEED / 1.25, -Constants.SPEED / 1.25, 135);
+    playerManager.mainPlayer.move(-diagonalSpeed, -diagonalSpeed, 135, keys.shift);
   } else if (keys.s && keys.d) {
-    playerManager.mainPlayer.move(Constants.SPEED / 1.25, Constants.SPEED / 1.25, -45);
+    playerManager.mainPlayer.move(diagonalSpeed, diagonalSpeed, -45, keys.shift);
   } else if (keys.s && keys.a) {
-    playerManager.mainPlayer.move(-Constants.SPEED / 1.25, Constants.SPEED / 1.25, -315);
+    playerManager.mainPlayer.move(-diagonalSpeed, diagonalSpeed, -315, keys.shift);
   } else if (keys.w) {
-    playerManager.mainPlayer.move(null, -Constants.SPEED, 0);
+    playerManager.mainPlayer.move(null, -currentSpeed, 0, keys.shift);
   } else if (keys.a) {
-    playerManager.mainPlayer.move(-Constants.SPEED, null, 90);
+    playerManager.mainPlayer.move(-currentSpeed, null, 90, keys.shift);
   } else if (keys.s) {
-    playerManager.mainPlayer.move(null, Constants.SPEED, 0);
+    playerManager.mainPlayer.move(null, currentSpeed, 0, keys.shift);
   } else if (keys.d) {
-    playerManager.mainPlayer.move(Constants.SPEED, null, 90);
+    playerManager.mainPlayer.move(currentSpeed, null, 90, keys.shift);
   }
 }

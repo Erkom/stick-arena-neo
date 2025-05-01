@@ -10,6 +10,7 @@ class GameObject {
     this.frameIndex = 0;
     this.repeatTimes = repeatTimes || -1;
     this.lastUpdated = Date.now();
+    this.animationSpeedMultiplier = 1.0; // Velocidade normal de animação
 
     // This is used to restore the original sprite after a temporary animation happens
     this.spritesheetSnapshot = spritesheetName;
@@ -48,11 +49,19 @@ class GameObject {
     this.swapSpritesheet(this.spritesheetSnapshot);
   }
 
+  // Define a velocidade da animação (1.0 = velocidade normal, 2.0 = duas vezes mais rápido)
+  setAnimationSpeed(speedMultiplier) {
+    this.animationSpeedMultiplier = speedMultiplier;
+  }
+
   update() {
     if (!this.isVisible) return;
     if (this.repeatTimes != -1 && this.repeatTimes <= 0) return;
 
-    if (Date.now() - this.lastUpdated >= this.spritesheetData.timePerFrame) {
+    // Aplicar o multiplicador de velocidade ao intervalo de atualização
+    const adjustedTimePerFrame = this.spritesheetData.timePerFrame / this.animationSpeedMultiplier;
+    
+    if (Date.now() - this.lastUpdated >= adjustedTimePerFrame) {
       // Collision detection
       if (this.frameIndex == this.spritesheetData.hitboxIndex && this.spritesheetData.isShootingAnimation) {
         this.dispatchEvent("shotsfired", { playerPos: { x: this.x, y: this.y } });

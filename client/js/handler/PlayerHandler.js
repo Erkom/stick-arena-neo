@@ -26,12 +26,12 @@ socketManager.on("playerDisconnected", (playerId) => {
 });
 
 socketManager.on("playWalkingAnimation", (data) => {
-  const { playerId, rotation } = data;
+  const { playerId, rotation, isRunning } = data;
 
   const player = playerManager.getPlayer(playerId);
   if (!player) return;
 
-  player.playWalkingAnim(rotation);
+  player.playWalkingAnim(rotation, isRunning);
 });
 
 socketManager.on("playerMoved", (data) => {

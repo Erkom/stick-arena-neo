@@ -142,14 +142,23 @@ class Player {
       || currentPosition.rotation !== this.previousPosition.rotation;
   }
 
-  playWalkingAnim(legRotation = 0) {
+  playWalkingAnim(legRotation = 0, isRunning = false) {
     this.legs.isVisible = true;
     this.canMove = false;
     this.legs.setPosition(this.body.x, this.body.y);
     this.legs.setRotation(legRotation * Constants.TO_RADIANS);
+    
+    // Ajustando a velocidade da animação quando estiver correndo
+    if (isRunning) {
+      // Velocidade de animação mais rápida para corrida (menos frames por ciclo)
+      this.legs.setAnimationSpeed(1.8);
+    } else {
+      // Velocidade normal para caminhada
+      this.legs.setAnimationSpeed(1.0);
+    }
   }
 
-  move(speedX, speedY = null, legRotation = 0) {
+  move(speedX, speedY = null, legRotation = 0, isRunning = false) {
     let newTileX;
     let newTileY;
 
@@ -180,10 +189,13 @@ class Player {
       this.body.setVelocityY(speedY);
     }
 
-    this.playWalkingAnim(legRotation);
+    this.playWalkingAnim(legRotation, isRunning);
 
     if (this.isMainPlayer) {
-      socketManager.emit("playedWalkingAnimation", { rotation: legRotation });
+      socketManager.emit("playedWalkingAnimation", { 
+        rotation: legRotation, 
+        isRunning: isRunning 
+      });
     }
   }
 
