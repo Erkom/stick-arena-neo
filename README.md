@@ -1,66 +1,66 @@
 # stick-arena-reborn
-A HTML5 remake of the Flash game Stick Arena
+Um remake em HTML5 do jogo Flash Stick Arena
 
-Note: This repo has been abandoned by now. I've started another project called Mafia Divided which is basically accomplishing this except with original assets and themes.
+Nota: Este repositório foi abandonado. Eu comecei outro projeto chamado Mafia Divided, que basicamente está realizando isso, exceto com ativos e temas originais.
 
-You can come check it out at https://mafiadivided.io and join the Discord server https://discord.gg/XmZfe5dqdk
+Você pode conferir em https://mafiadivided.io e entrar no servidor Discord https://discord.gg/XmZfe5dqdk
 
-## Demo
+## Demonstração
 
 ![Multiplayer](https://user-images.githubusercontent.com/52111974/210186327-da458981-d3d4-469b-9de0-df20070fba4a.gif)
 
-## Roadmap
+## Roteiro
 
-- [x] Initial HTML5 Canvas setup
-- [x] Initial multiplayer setup
-- [ ] Make the game logic server-sided
-- [ ] Setup PostgreSQL DB
-- [ ] Login / registration system
-- [ ] Views
-  - [ ] Login screen
+- [x] Configuração inicial do HTML5 Canvas
+- [x] Configuração inicial do multiplayer
+- [ ] Tornar a lógica do jogo no lado do servidor
+- [ ] Configurar o banco de dados PostgreSQL
+- [ ] Sistema de login / registro
+- [ ] Visualizações
+  - [ ] Tela de login
   - [ ] Lobby
-  - [ ] Game room
-- [ ] Sounds
-  - [ ] An option to mute / unmute the sounds
-- [ ] Gameplay
-  - [x] Larger maps
-    - [ ] Add all the other maps
-  - [x] Camera follows the player
+  - [ ] Sala de jogo
+- [ ] Sons
+  - [ ] Uma opção para silenciar / ativar os sons
+- [ ] Jogabilidade
+  - [x] Mapas maiores
+    - [ ] Adicionar todos os outros mapas
+  - [x] A câmera segue o jogador
     - [x] Zoom in
-- [ ] Combat system
-  - [ ] Picking up weapons from the ground
-  - [x] Collision detection
-    - Needs a bit of improvement
-  - [x] Hitpoints
-    - [x] Death animations
-  - [ ] Weapon: Fists
-  - [x] Weapon: Glock
-  - [ ] Weapon: Bat
-  - [ ] Weapon: AK-47
-  - [ ] Weapon: Shotgun
-  - [ ] Weapon: Sledgehammer
-  - [ ] Weapon: Katana
-  - [ ] Weapon: Laser Sword
-  - [ ] Weapon: Chainsaw
-  - [ ] Weapon: Tesla Helmet
-  - [ ] Weapon: Chaingun
-  - [ ] Weapon: Flamethrower
-  - [ ] Weapon: Rail Gun
-- [ ] Game logic
-  - [ ] Room creation
-  - [ ] 5 minute timer for the room
-  - [ ] Quick Play support
-    - This will likely mean that there needs to be support for unregistered users
-  - [ ] Player disconnections in the middle of a game
-    - Ideally there should be a system in place to discourage this from happening
+- [ ] Sistema de combate
+  - [ ] Pegar armas do chão
+  - [x] Detecção de colisão
+    - Precisa de um pouco de melhoria
+  - [x] Pontos de vida
+    - [x] Animações de morte
+  - [ ] Arma: Punhos
+  - [x] Arma: Glock
+  - [ ] Arma: Taco
+  - [ ] Arma: AK-47
+  - [ ] Arma: Espingarda
+  - [ ] Arma: Marreta
+  - [ ] Arma: Katana
+  - [ ] Arma: Espada Laser
+  - [ ] Arma: Motosserra
+  - [ ] Arma: Capacete Tesla
+  - [ ] Arma: Metralhadora
+  - [ ] Arma: Lança-chamas
+  - [ ] Arma: Rail Gun
+- [ ] Lógica do jogo
+  - [ ] Criação de salas
+  - [ ] Temporizador de 5 minutos para a sala
+  - [ ] Suporte para Jogo Rápido
+    - Isso provavelmente significa que deve haver suporte para usuários não registrados
+  - [ ] Desconexões de jogadores no meio de um jogo
+    - Idealmente, deve haver um sistema para desencorajar isso de acontecer
 - [ ] Creds
-- [ ] Cosmetic: Spinners
-- [ ] Cosmetic: Pets
-- [ ] Cosmetic: Shop to buy spinners and pets with creds
-- [ ] Game mode: Capture The Flag
-- [ ] Game mode: Team Deathmatch
-- [ ] Game mode: PvE / Zombies
-- [ ] Game mode: Wager matches
+- [ ] Cosmético: Spinners
+- [ ] Cosmético: Pets
+- [ ] Cosmético: Loja para comprar spinners e pets com creds
+- [ ] Modo de jogo: Capture a Bandeira
+- [ ] Modo de jogo: Team Deathmatch
+- [ ] Modo de jogo: PvE / Zumbis
+- [ ] Modo de jogo: Partidas de Aposta
 
-## Copyright
-The assets used in this project belong to XGenStudios. This project is for educational purposes only.
+## Direitos autorais
+Os ativos usados neste projeto pertencem à XGenStudios. Este projeto é apenas para fins educacionais.
