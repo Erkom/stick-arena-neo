@@ -1,0 +1,384 @@
+body {
+  background-color: #314359;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+canvas {
+  margin-top: 25px;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+  border: 15px solid #202c3a;
+}
+
+/* Login and Register Styles */
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 80px auto;
+  background-color: #202c3a;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.auth-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #3a526a;
+  background-color: #1a2331;
+  color: #fff;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #5a8fbf;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 4px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  background-color: #4a8cbf;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #3a7caf;
+}
+
+.btn-secondary {
+  background-color: #6a7a8a;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6a7a;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.auth-links {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.auth-links a {
+  color: #4a8cbf;
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #ff5252;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Lobby Styles */
+.lobby-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.game-header {
+  background-color: #202c3a;
+  padding: 20px;
+  border-bottom: 1px solid #3a526a;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.creds {
+  color: #ffd700;
+}
+
+.lobby-content {
+  display: flex;
+  flex: 1;
+  padding: 20px;
+}
+
+.room-list {
+  flex: 1;
+  background-color: #202c3a;
+  border-radius: 8px;
+  padding: 20px;
+  margin-right: 20px;
+}
+
+.room-item {
+  background-color: #283848;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.room-item:hover {
+  background-color: #324658;
+}
+
+.room-name {
+  font-weight: bold;
+}
+
+.room-info {
+  color: #aaa;
+}
+
+.room-status-playing {
+  color: #4caf50;
+}
+
+.room-status-waiting {
+  color: #ffc107;
+}
+
+.chat-box {
+  flex: 1;
+  background-color: #202c3a;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #1a2331;
+  border-radius: 4px;
+}
+
+.chat-message {
+  margin-bottom: 10px;
+}
+
+.chat-input-container {
+  display: flex;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #3a526a;
+  background-color: #1a2331;
+  color: #fff;
+}
+
+.chat-send {
+  border-radius: 0 4px 4px 0;
+}
+
+.create-room-btn {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Game Room Styles */
+.game-room {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.game-canvas-container {
+  flex: 1;
+  position: relative;
+}
+
+.game-controls {
+  background-color: #202c3a;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.player-list {
+  background-color: rgba(26, 35, 49, 0.8);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 15px;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+.player-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3a526a;
+}
+
+.timer {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(26, 35, 49, 0.8);
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.sound-control {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #283848;
+  border-radius: 50%;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+}
+
+.sound-control:hover {
+  background-color: #324658;
+}
+
+/* Weapons UI */
+.weapons-ui {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(26, 35, 49, 0.8);
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.weapon-slot {
+  width: 60px;
+  height: 60px;
+  background-color: #202c3a;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+}
+
+.weapon-slot.active {
+  border-color: #4a8cbf;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: #202c3a;
+  border-radius: 8px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.modal-close {
+  font-size: 24px;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.modal-close:hover {
+  color: #fff;
+}
+
+.modal-body {
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

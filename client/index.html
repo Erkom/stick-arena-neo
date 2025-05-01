@@ -4,48 +4,277 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stick Fight Club</title>
-  <style>
-    body {
-      background-color: #314359;
-    }
-
-    canvas {
-      margin-top: 25px;
-      margin-right: auto;
-      margin-left: auto;
-      display: block;
-      border: 15px solid #202c3a;
-    }
-  </style>
+  <title>Stick Arena Neo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-  <canvas id="canvas" width="960" height="720" style="background-color: #000"></canvas>
+  <div id="app-container"></div>
 
+  <!-- Socket.io -->
   <script src="/socket.io/socket.io.js"></script>
 
+  <!-- View Components -->
+  <script src="./js/views/AuthView.js"></script>
+  <script src="./js/views/LobbyView.js"></script>
+  <script src="./js/views/GameRoomView.js"></script>
+
+  <!-- Audio -->
+  <script src="./js/audio/AudioManager.js"></script>
+
+  <!-- Constants & Utils -->
   <script src="./js/utils/Constants.js"></script>
   <script src="./js/utils/Physics.js"></script>
   <script src="./js/viewport/Camera.js"></script>
 
+  <!-- Sprite System -->
   <script src="./js/spritesheet/Spritesheet.js"></script>
   <script src="./js/builder/SpritesheetBuilder.js"></script>
   <script src="./js/manager/SpritesheetManager.js"></script>
 
+  <!-- Game Objects -->
   <script src="./js/entity/GameObject.js"></script>
   <script src="./js/builder/GameObjectBuilder.js"></script>
 
+  <!-- Player -->
   <script src="./js/entity/Player.js"></script>
   <script src="./js/builder/PlayerBuilder.js"></script>
   <script src="./js/manager/PlayerManager.js"></script>
 
+  <!-- Input -->
   <script src="./js/input/Keyboard.js"></script>
   <script src="./js/input/Mouse.js"></script>
 
+  <!-- Socket -->
   <script src="./js/manager/SocketManager.js"></script>
   <script src="./js/handler/PlayerHandler.js"></script>
+
+  <!-- Main Game -->
   <script src="./js/game.js"></script>
+
+  <!-- Main App -->
+  <script>
+    // App state management
+    const AppState = {
+      AUTH: 'auth',
+      LOBBY: 'lobby',
+      GAME: 'game'
+    };
+
+    class App {
+      constructor() {
+        this.container = document.getElementById('app-container');
+        this.currentState = AppState.AUTH;
+        this.currentView = null;
+        
+        // Initialize view components
+        this.authView = new AuthView();
+        this.lobbyView = new LobbyView();
+        this.gameRoomView = new GameRoomView();
+        
+        // Set up view callbacks
+        this.authView.setLoginSuccessCallback(this.handleLoginSuccess.bind(this));
+        this.lobbyView.setJoinRoomCallback(this.handleJoinRoom.bind(this));
+        this.gameRoomView.setLeaveRoomCallback(this.handleLeaveRoom.bind(this));
+        
+        // Initialize audio
+        window.audioManager.loadSounds();
+        
+        // Initialize socket listeners
+        this.initSocketListeners();
+        
+        // Check if user is already logged in
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+        
+        if (token && user) {
+          this.handleLoginSuccess(JSON.parse(user));
+        } else {
+          this.setState(AppState.AUTH);
+        }
+      }
+      
+      // Switch between different app states
+      setState(state) {
+        this.currentState = state;
+        
+        // Clear container
+        this.container.innerHTML = '';
+        
+        // Render appropriate view
+        switch (state) {
+          case AppState.AUTH:
+            this.currentView = this.authView.render();
+            break;
+          case AppState.LOBBY:
+            this.currentView = this.lobbyView.render();
+            break;
+          case AppState.GAME:
+            this.currentView = this.gameRoomView.render();
+            break;
+        }
+        
+        // Add view to container
+        this.container.appendChild(this.currentView);
+      }
+      
+      // Handle successful login
+      handleLoginSuccess(user) {
+        // Set user data in lobby view
+        this.lobbyView.setUser(user);
+        
+        // Switch to lobby state
+        this.setState(AppState.LOBBY);
+        
+        // Authenticate socket connection
+        if (localStorage.getItem('token')) {
+          socketManager.emit('authenticate', { token: localStorage.getItem('token') });
+        }
+        
+        // Request room list
+        socketManager.emit('getRoomList');
+      }
+      
+      // Handle joining a game room
+      handleJoinRoom(roomId) {
+        // Switch to game state
+        this.setState(AppState.GAME);
+        
+        // Initialize game
+        if (window.setupGame) {
+          window.setupGame();
+        }
+        
+        // Play sound
+        window.audioManager.play('game-start', 0.8);
+      }
+      
+      // Handle leaving a game room
+      handleLeaveRoom() {
+        // Switch back to lobby
+        this.setState(AppState.LOBBY);
+        
+        // Request updated room list
+        socketManager.emit('getRoomList');
+      }
+      
+      // Initialize socket event listeners
+      initSocketListeners() {
+        // Room list update
+        socketManager.on('roomList', (rooms) => {
+          if (this.currentState === AppState.LOBBY) {
+            this.lobbyView.updateRooms(rooms);
+          }
+        });
+        
+        // Room created
+        socketManager.on('roomCreated', (room) => {
+          if (this.currentState === AppState.LOBBY) {
+            const currentRooms = this.lobbyView.rooms || [];
+            this.lobbyView.updateRooms([...currentRooms, room]);
+          }
+        });
+        
+        // Room updated
+        socketManager.on('roomUpdated', (roomUpdate) => {
+          if (this.currentState === AppState.LOBBY) {
+            const currentRooms = this.lobbyView.rooms || [];
+            const updatedRooms = currentRooms.map(room => {
+              if (room.id === roomUpdate.id) {
+                return { ...room, ...roomUpdate };
+              }
+              return room;
+            });
+            this.lobbyView.updateRooms(updatedRooms);
+          }
+        });
+        
+        // Joined room
+        socketManager.on('joinedRoom', (data) => {
+          if (this.currentState === AppState.LOBBY) {
+            this.gameRoomView.setRoomData({
+              roomId: data.roomId,
+              roomName: data.roomName || 'Game Room'
+            });
+            this.gameRoomView.updatePlayers(data.players);
+            this.handleJoinRoom(data.roomId);
+          }
+        });
+        
+        // Game started
+        socketManager.on('gameStarted', (data) => {
+          if (this.currentState === AppState.GAME) {
+            const endTime = data.endTime;
+            const timeRemaining = endTime - Date.now();
+            
+            // Update timer
+            this.gameRoomView.updateTimer(timeRemaining);
+            
+            // Start timer countdown
+            const timerInterval = setInterval(() => {
+              const remaining = endTime - Date.now();
+              if (remaining <= 0) {
+                clearInterval(timerInterval);
+                this.gameRoomView.updateTimer(0);
+              } else {
+                this.gameRoomView.updateTimer(remaining);
+              }
+            }, 1000);
+            
+            // Play countdown sound
+            window.audioManager.play('countdown', 0.7);
+          }
+        });
+        
+        // Game ended
+        socketManager.on('gameEnded', (data) => {
+          if (this.currentState === AppState.GAME) {
+            // Show game result modal
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.innerHTML = `
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3 class="modal-title">Game Over</h3>
+                </div>
+                <div class="modal-body">
+                  <p>The match has ended!</p>
+                  <!-- Display winner and stats here -->
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary" id="returnToLobbyBtn">Return to Lobby</button>
+                </div>
+              </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add event listener
+            modal.querySelector('#returnToLobbyBtn').addEventListener('click', () => {
+              document.body.removeChild(modal);
+              this.handleLeaveRoom();
+            });
+            
+            // Play game end sound
+            window.audioManager.play('game-end', 0.8);
+          }
+        });
+        
+        // Chat message
+        socketManager.on('chatMessage', (message) => {
+          if (this.currentState === AppState.LOBBY) {
+            this.lobbyView.addChatMessage(message);
+          }
+        });
+      }
+    }
+
+    // Initialize app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      window.app = new App();
+    });
+  </script>
 </body>
 
 </html>

@@ -13,15 +13,18 @@ Você pode conferir em https://mafiadivided.io e entrar no servidor Discord http
 
 - [x] Configuração inicial do HTML5 Canvas
 - [x] Configuração inicial do multiplayer
-- [ ] Tornar a lógica do jogo no lado do servidor
-- [ ] Configurar o banco de dados PostgreSQL
-- [ ] Sistema de login / registro
-- [ ] Visualizações
-  - [ ] Tela de login
-  - [ ] Lobby
-  - [ ] Sala de jogo
-- [ ] Sons
-  - [ ] Uma opção para silenciar / ativar os sons
+- [x] Tornar a lógica do jogo no lado do servidor
+- [x] Configurar o banco de dados PostgreSQL
+  - [x] Estrutura de tabelas criada
+  - [x] Lógica de acesso ao banco implementada
+  - [ ] Conexão física/instalação do banco (configuração local)
+- [x] Sistema de login / registro
+- [x] Visualizações
+  - [x] Tela de login
+  - [x] Lobby
+  - [x] Sala de jogo
+- [x] Sons
+  - [x] Uma opção para silenciar / ativar os sons
 - [ ] Jogabilidade
   - [x] Mapas maiores
     - [ ] Adicionar todos os outros mapas
@@ -44,16 +47,16 @@ Você pode conferir em https://mafiadivided.io e entrar no servidor Discord http
   - [ ] Arma: Motosserra
   - [ ] Arma: Capacete Tesla
   - [ ] Arma: Metralhadora
-  - [ ] Arma: Lança-chamas
+  - [x] Arma: Lança-chamas
   - [ ] Arma: Rail Gun
-- [ ] Lógica do jogo
-  - [ ] Criação de salas
-  - [ ] Temporizador de 5 minutos para a sala
-  - [ ] Suporte para Jogo Rápido
+- [x] Lógica do jogo
+  - [x] Criação de salas
+  - [x] Temporizador de 5 minutos para a sala
+  - [x] Suporte para Jogo Rápido
     - Isso provavelmente significa que deve haver suporte para usuários não registrados
-  - [ ] Desconexões de jogadores no meio de um jogo
+  - [x] Desconexões de jogadores no meio de um jogo
     - Idealmente, deve haver um sistema para desencorajar isso de acontecer
-- [ ] Creds
+- [x] Creds
 - [ ] Cosmético: Spinners
 - [ ] Cosmético: Pets
 - [ ] Cosmético: Loja para comprar spinners e pets com creds
