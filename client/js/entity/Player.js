@@ -109,13 +109,48 @@ class Player {
       hitboxRegion[coordinate].y = xyTest.y;
     }
 
+    // Calcular a direção do tiro (vetor normalizado)
+    // A arma aponta na direção da rotação do jogador
+    const shootingDirection = {
+      x: Math.cos(rotation),
+      y: Math.sin(rotation)
+    };
+
     const otherPlayers = playerManager.getPlayers();
     for (const playerId in otherPlayers) {
       const otherPlayer = otherPlayers[playerId];
       if (otherPlayer.isMainPlayer) continue;
       if (otherPlayer.isRespawning) continue;
-      if (Physics.checkForObstacles(playerPos, otherPlayer.getPosition())) continue;
-      if (Physics.isCircleCollidingRect(otherPlayer.getPosition(), hitboxRegion)) {
+      
+      // Obter a posição do outro jogador
+      const otherPos = otherPlayer.getPosition();
+      
+      // Calcular vetor direção do jogador para o alvo
+      const toTargetVector = {
+        x: otherPos.x - playerPos.x,
+        y: otherPos.y - playerPos.y
+      };
+      
+      // Normalizar o vetor
+      const distance = Math.sqrt(toTargetVector.x * toTargetVector.x + toTargetVector.y * toTargetVector.y);
+      if (distance === 0) continue; // Mesmo ponto, ignorar
+      
+      const normalizedTargetVector = {
+        x: toTargetVector.x / distance,
+        y: toTargetVector.y / distance
+      };
+      
+      // Calcular o produto escalar para verificar se o alvo está na frente do jogador
+      // Se for positivo, o alvo está na mesma direção que a arma está apontando
+      const dotProduct = shootingDirection.x * normalizedTargetVector.x + 
+                          shootingDirection.y * normalizedTargetVector.y;
+      
+      // Verificar se o alvo está dentro de um cone de visão à frente (ângulo de aproximadamente 90 graus)
+      if (dotProduct <= 0) continue; // O alvo está atrás ou ao lado, não na frente
+      
+      // Verificações adicionais
+      if (Physics.checkForObstacles(playerPos, otherPos)) continue;
+      if (Physics.isCircleCollidingRect(otherPos, hitboxRegion)) {
         socketManager.emit("playerHit", { playerId: playerId });
       }
     }
